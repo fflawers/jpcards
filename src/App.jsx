@@ -170,6 +170,23 @@ function App() {
       pdf.addImage(canvasConst.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, canvasConst.width, canvasConst.height);
       
       const fileName = `Servicio_JP_${client.replace(/\s+/g, '_') || 'General'}.pdf`;
+      
+      const pdfBlob = pdf.output('blob');
+      const pdfFile = new File([pdfBlob], fileName, { type: 'application/pdf' });
+      
+      if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+        try {
+          await navigator.share({
+            title: 'Documentos de Servicio',
+            files: [pdfFile]
+          });
+          return; // Terminar si se compartió con éxito
+        } catch (error) {
+          console.log('Compartir cancelado o fallido:', error);
+        }
+      }
+      
+      // Fallback si no soporta navigator.share o falló
       pdf.save(fileName);
       
     } catch (error) {
