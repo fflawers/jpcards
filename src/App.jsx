@@ -134,43 +134,46 @@ function App() {
     notaElement.style.display = 'block';
     constanciaElement.style.display = 'block';
 
-    const captureAndSave = async (element, nameSuffix) => {
-      try {
-        const canvas = await html2canvas(element, { 
-          scale: 2,
-          useCORS: true,
-          windowWidth: 1024,
-          onclone: (clonedDoc) => {
-            const clonedElement = clonedDoc.getElementById(element.id);
-            if (clonedElement) {
-               clonedElement.style.width = '850px';
-               clonedElement.style.maxWidth = '850px';
-               clonedElement.style.display = 'block';
-            }
-          },
-          ignoreElements: (el) => el.classList.contains('no-print')
-        });
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        
-        const pdfWidth = canvas.width;
-        const pdfHeight = canvas.height;
-        
-        const pdf = new jsPDF({
-          orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
-          unit: 'px',
-          format: [pdfWidth, pdfHeight]
-        });
-        
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`${nameSuffix}.pdf`);
-      } catch (error) {
-        console.error('Error generating PDF for', nameSuffix, error);
-      }
+    const captureCanvas = async (element) => {
+      return await html2canvas(element, { 
+        scale: 2,
+        useCORS: true,
+        windowWidth: 1024,
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.getElementById(element.id);
+          if (clonedElement) {
+             clonedElement.style.width = '850px';
+             clonedElement.style.maxWidth = '850px';
+             clonedElement.style.display = 'block';
+          }
+        },
+        ignoreElements: (el) => el.classList.contains('no-print')
+      });
     };
 
     try {
-      await captureAndSave(notaElement, `Nota_Servicio_${client.replace(/\s+/g, '_')}`);
-      await captureAndSave(constanciaElement, `Constancia_${client.replace(/\s+/g, '_')}`);
+      // Capturar ambas pestañas
+      const canvasNota = await captureCanvas(notaElement);
+      const canvasConst = await captureCanvas(constanciaElement);
+
+      // Crear PDF ajustado a la primera imagen (Nota)
+      const pdf = new jsPDF({
+        orientation: canvasNota.width > canvasNota.height ? 'landscape' : 'portrait',
+        unit: 'px',
+        format: [canvasNota.width, canvasNota.height]
+      });
+      
+      pdf.addImage(canvasNota.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, canvasNota.width, canvasNota.height);
+      
+      // Agregar nueva página ajustada a la segunda imagen (Constancia)
+      pdf.addPage([canvasConst.width, canvasConst.height], canvasConst.width > canvasConst.height ? 'landscape' : 'portrait');
+      pdf.addImage(canvasConst.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, canvasConst.width, canvasConst.height);
+      
+      const fileName = `Servicio_JP_${client.replace(/\s+/g, '_') || 'General'}.pdf`;
+      pdf.save(fileName);
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
     } finally {
       // Restaurar visibilidad
       notaElement.style.display = originalNotaDisplay;
