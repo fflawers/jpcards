@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-red: #E31818;
+  --primary-dark: #0A0A0A;
+  --primary-light: #F8F9FA;
+  --secondary-dark: #1F2023;
+  --text-dark: #111827;
+  --text-light: #6B7280;
+  --border-color: #E5E7EB;
+  --table-header: #000000;
+  --accent-color: #FF5C00;
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f0f2f5;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Print styles to hide non-essential UI elements like the "Print" button and adjust margins */
+@media print {
+  body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .app-wrapper {
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    /* Reducimos ligeramente la escala para que encaje perfecto en A4 */
+    transform: scale(0.92);
+    transform-origin: top center;
+  }
+
+  @page {
+    size: A4;
+    margin: 0cm;
+  }
+}
+
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+.input-field {
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px dashed var(--border-color);
+  padding: 4px;
+  width: 100%;
+  transition: all 0.2s;
+  color: var(--text-dark);
+}
+.input-field:focus {
+  outline: none;
+  border-bottom-color: var(--primary-red);
+  background-color: rgba(227, 24, 24, 0.05);
+}
+
+.input-field.title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-red);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px -1px rgba(227, 24, 24, 0.2), 0 2px 4px -1px rgba(227, 24, 24, 0.1);
+}
+.btn-primary:hover {
+  background-color: #C01010;
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.app-wrapper {
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
