@@ -200,7 +200,7 @@ function App() {
         {/* HEADER */}
         <div className="header-banner">
           <div className="logo-section">
-            <img src="/logo.png" alt="JP Motors Logo" style={{ height: '65px', objectFit: 'contain' }} />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="JP Motors Logo" style={{ height: '65px', objectFit: 'contain' }} />
           </div>
           <div className="title-section">
             <div className="title-main">NOTA DE SERVICIO</div>
@@ -467,7 +467,7 @@ function App() {
           </div>
 
           <div className="logo-footer" style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="JP Motors Logo" style={{ height: '45px', objectFit: 'contain' }} />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="JP Motors Logo" style={{ height: '45px', objectFit: 'contain' }} />
           </div>
 
           <div className="signature-box">
@@ -482,7 +482,7 @@ function App() {
       <div id="constancia-container" className="document-container print-container" style={{ display: activeTab === 'constancia' ? 'block' : 'none', padding: '40px', fontFamily: 'Arial, sans-serif' }}>
           
           <div style={{ background: '#000', padding: '20px', textAlign: 'center', marginBottom: '15px' }}>
-            <img src="/logo.png" alt="JP Motors" style={{ height: '100px' }} />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="JP Motors" style={{ height: '100px' }} />
           </div>
           <h2 style={{ textAlign: 'center', margin: '0 0 5px 0', fontSize: '20px', textTransform: 'uppercase' }}>
             CONSTANCIA DE SERVICIO Y CONFORMIDAD DEL CLIENTE
